@@ -1,5 +1,6 @@
 package org.github.felipegutierrez.biddingsystem.auction.handler;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -17,6 +18,9 @@ class AuctionServerHandlerFuncTest {
 
     @Autowired
     WebTestClient webTestClient;
+
+    @Autowired
+    AuctionServerHandlerFunc auctionServerHandlerFunc;
 
     @Test
     void bidRequest_complete() {
@@ -68,5 +72,12 @@ class AuctionServerHandlerFuncTest {
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBodyList(String.class);
+    }
+
+    @Test
+    void getBidders() {
+        Assertions.assertNotNull(auctionServerHandlerFunc.getBidders());
+        Assertions.assertEquals(3, auctionServerHandlerFunc.getBidders().size());
+        // http://localhost:8081, http://localhost:8082, http://localhost:8083
     }
 }
