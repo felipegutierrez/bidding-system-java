@@ -69,9 +69,7 @@ class AuctionServerHandlerFuncTest {
 
         webTestClient.get().uri(bidRequest)
                 .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                .expectBodyList(String.class);
+                .expectStatus().is5xxServerError();
     }
 
     @Test

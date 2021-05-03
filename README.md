@@ -11,8 +11,8 @@ Contents of this document:
 
 - [1 The task](#1-the-task)
   - [1.1 Incoming Requests](#11-incoming-requests)
-  - [1.2 Bid Requests](#12-bid-requests)
-  - [1.3 Bid Response](#13-bid-response)
+  - [1.2 Bid Requests](#12-bidRequest-requests)
+  - [1.3 Bid Response](#13-bidRequest-response)
   - [1.4 Auction Response](#14-auction-response)
   - [1.5 Configuration](#15-configuration)
 - [2 How to test your application](#2-how-to-test-your-application)
@@ -27,7 +27,7 @@ Contents of this document:
 
 Build a bidding system behaving as following:
 
-For every incoming request as described in [1], send out bid requests as
+For every incoming request as described in [1], send out bidRequest requests as
 described in [2] to a configurable number of bidders [5]. Responses from these
 bidders as described in [3] must be processed. The highest bidder wins, and
 payload is sent out as described in [4].
@@ -43,8 +43,8 @@ Please stay with commonly known frameworks for easier reviewing and explaining
 afterwards.
 
 [1]: #1-incoming-requests
-[2]: #2-bid-requests
-[3]: #3-bid-response
+[2]: #2-bidRequest-requests
+[3]: #3-bidRequest-response
 [4]: #4-auction-response
 
 ### 1.1 Incoming Requests
@@ -60,7 +60,7 @@ query-parameters.
 
 ### 1.2 Bid Requests
 
-The application must forward incoming bid requests by sending a corresponding
+The application must forward incoming bidRequest requests by sending a corresponding
 HTTP POST request to each of the configured bidders with the body in the
 following JSON format:
 
@@ -79,32 +79,32 @@ Multi-value parameters need not be supported.
 
 ### 1.3 Bid Response
 
-The bidders' response will contain details of the bid(offered price), with `id` and `bid`
+The bidders' response will contain details of the bidRequest(offered price), with `id` and `bidRequest`
 values in a numeric format:
 
 ```json
 {
 	"id" : $id,
-	"bid": bid,
+	"bidRequest": bidRequest,
 	"content": "the string to deliver as a response"
 }
 ```
 
 ### 1.4 Auction Response
 
-The response for the auction must be the `content` property of the winning bid,
+The response for the auction must be the `content` property of the winning bidRequest,
 with some tags that can be mentioned in the content replaced with respective values.
 
-For now, only `$price$` must be supported, denoting the final price of the bid.
+For now, only `$price$` must be supported, denoting the final price of the bidRequest.
 
 Example:
 
 
-Following bid responses:
+Following bidRequest responses:
 ```json
 {
 	"id" : 123,
-	"bid": 750,
+	"bidRequest": 750,
 	"content": "a:$price"
 }
 ```
@@ -113,7 +113,7 @@ and
 ```json
 {
 	"id" : 123,
-	"bid": 500,
+	"bidRequest": 500,
 	"content": "b:$price"
 }
 ```
@@ -183,7 +183,7 @@ from your application:
 ### 2.4 Run the test
 
 To run the test, execute the shell script `run-test.sh`. The script expects
-your application to listen on `localhost:8080`. It will issue a number of bid
+your application to listen on `localhost:8080`. It will issue a number of bidRequest
 requests to your application and verify the responses to these requests. If
 your application doesn't respond correctly, it will print out a diff between
 the expected and the actual results.
