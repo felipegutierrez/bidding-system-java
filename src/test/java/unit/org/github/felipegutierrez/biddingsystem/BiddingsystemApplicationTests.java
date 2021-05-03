@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.biddingsystem.biddingsystem;
+package org.github.felipegutierrez.biddingsystem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

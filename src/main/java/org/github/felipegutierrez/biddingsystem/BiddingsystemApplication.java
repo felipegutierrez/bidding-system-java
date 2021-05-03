@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.biddingsystem.biddingsystem;
+package org.github.felipegutierrez.biddingsystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
