@@ -11,7 +11,6 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 @Slf4j
 @Component
@@ -32,7 +31,7 @@ public class AuctionHandlerFunc {
         // send POST request to all bidders and collect responses
         var bidResponseFlux = Flux
                 .fromStream(bidderService.bidResponseStream(adId, attributes.toSingleValueMap()))
-                .parallel().runOn(Schedulers.parallel())
+                // .concatMap(this::gatherResponses);
                 .flatMap(this::gatherResponses);
 
         // process the winner bid
