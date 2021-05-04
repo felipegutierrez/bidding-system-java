@@ -1,6 +1,6 @@
 package org.github.felipegutierrez.biddingsystem.auction.router;
 
-import org.github.felipegutierrez.biddingsystem.auction.handler.AuctionServerHandlerFunc;
+import org.github.felipegutierrez.biddingsystem.auction.handler.AuctionHandlerFunc;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -15,7 +15,7 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 public class AuctionServerRouterFuncConfig {
 
     @Bean
-    public RouterFunction route(AuctionServerHandlerFunc auctionServerHandlerFunc) {
+    public RouterFunction route(AuctionHandlerFunc auctionServerHandlerFunc) {
         return RouterFunctions
                 .route(GET(BID_REQUEST_ENDPOINT_V1).and(accept(MediaType.APPLICATION_JSON)),
                         auctionServerHandlerFunc::bidRequest);

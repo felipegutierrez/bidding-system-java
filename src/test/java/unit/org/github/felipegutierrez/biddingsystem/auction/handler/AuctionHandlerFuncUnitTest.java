@@ -1,6 +1,5 @@
 package org.github.felipegutierrez.biddingsystem.auction.handler;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -14,39 +13,13 @@ import static org.github.felipegutierrez.biddingsystem.auction.util.BidConstants
 @DirtiesContext
 @AutoConfigureWebTestClient
 @SpringBootTest
-class AuctionServerHandlerFuncTest {
+class AuctionHandlerFuncUnitTest {
 
     @Autowired
     WebTestClient webTestClient;
 
     @Autowired
-    AuctionServerHandlerFunc auctionServerHandlerFunc;
-
-    @Test
-    void bidRequest_complete() {
-        var bidRequest = BID_REQUEST_ENDPOINT_V1
-                .replace("{id}", "234")
-                .replace("{attributes}", "?c=5&b=2");
-
-        webTestClient.get().uri(bidRequest)
-                .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                .expectBodyList(String.class);
-    }
-
-    @Test
-    void bidRequest_noAttributes() {
-        var bidRequest = BID_REQUEST_ENDPOINT_V1
-                .replace("{id}", "234")
-                .replace("{attributes}", "");
-
-        webTestClient.get().uri(bidRequest)
-                .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                .expectBodyList(String.class);
-    }
+    AuctionHandlerFunc auctionServerHandlerFunc;
 
     @Test
     void bidRequest_noId() {
@@ -70,12 +43,5 @@ class AuctionServerHandlerFuncTest {
         webTestClient.get().uri(bidRequest)
                 .exchange()
                 .expectStatus().is5xxServerError();
-    }
-
-    @Test
-    void getBidders() {
-        Assertions.assertNotNull(auctionServerHandlerFunc.getBidders());
-        Assertions.assertEquals(3, auctionServerHandlerFunc.getBidders().size());
-        // http://localhost:8081, http://localhost:8082, http://localhost:8083
     }
 }
