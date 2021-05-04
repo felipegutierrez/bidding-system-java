@@ -1,6 +1,5 @@
 package org.github.felipegutierrez.biddingsystem.auction.handler;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -20,7 +19,6 @@ class AuctionHandlerFuncIntgTest {
     WebTestClient webTestClient;
 
     @Test
-    @Disabled("It is necessary to start the docker clients")
     void bidRequest_complete() {
 
         var bidRequest = BID_REQUEST_ENDPOINT_V1
@@ -36,7 +34,6 @@ class AuctionHandlerFuncIntgTest {
     }
 
     @Test
-    @Disabled("It is necessary to start the docker clients")
     void bidRequest_noAttributes() {
         var bidRequest = BID_REQUEST_ENDPOINT_V1
                 .replace("{id}", "234")

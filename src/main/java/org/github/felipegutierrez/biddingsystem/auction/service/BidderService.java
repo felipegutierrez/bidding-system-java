@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,11 +22,10 @@ import java.util.stream.Stream;
 @Service
 public class BidderService {
 
+    private final Set<WebClient> biddersWebClient = new HashSet<WebClient>();
     @Getter
     @Value("${bidders:http://localhost:8081, http://localhost:8082, http://localhost:8083}")
     private List<String> bidders;
-
-    private final Set<WebClient> biddersWebClient = new HashSet<WebClient>();
 
     /**
      * create a request like:
@@ -43,6 +41,7 @@ public class BidderService {
                             .body(Mono.just(bidRequest), BidRequest.class)
                             .retrieve()
                             .bodyToFlux(BidResponse.class)
+                            .onErrorReturn(new BidResponse(adId, 0, "$price$"))
                             .log("BidResponse ");
                 });
     }
