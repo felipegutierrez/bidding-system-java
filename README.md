@@ -1,4 +1,6 @@
 [![Java CI with Gradle](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/gradle.yml/badge.svg)](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/gradle.yml)
+[![Run Test Suites](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/codecov-test-suites.yml/badge.svg)](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/codecov-test-suites.yml)
+[![codecov](https://codecov.io/gh/felipegutierrez/bidding-system-java/branch/master/graph/badge.svg?token=wsGWEdNtGR)](https://codecov.io/gh/felipegutierrez/bidding-system-java)
 
 
 Bidding system
