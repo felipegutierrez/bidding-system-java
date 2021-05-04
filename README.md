@@ -24,7 +24,7 @@ Contents of this document:
   - [2.2 Start the Docker containers](#22-start-the-docker-containers)
   - [2.3 Start the application](#23-start-the-application)
   - [2.4 Run the test](#24-run-the-test)
-- [3 Task Submission](#3-task-submission)
+- [3 Running](#3-running)
 
 
 ## 1 The task
@@ -192,7 +192,19 @@ requests to your application and verify the responses to these requests. If
 your application doesn't respond correctly, it will print out a diff between
 the expected and the actual results.
 
-## 3 Task Submission
+## 3 Running
 
-When your application passes the test, please send the code and instructions on
-how to build and run it back to Yieldlab.
+ - Build: `./gradlew build`
+ - Test: `./gradlew test`
+ - Test report: `./gradlew jacocoTestReport`
+ - Run with 3 bidders: 
+```
+java -jar ./build/libs/biddingsystem-0.0.1.jar \
+-Dspring-boot.run.arguments=--bidders="http://localhosost:8081, http://localhost:8082, http://localhost:8083"
+```
+ - Commands to test:
+```
+./run-test.sh
+curl -s "http://localhost:8080/1?a=5"; echo
+curl -s "http://localhost:8080/2?c=5&b=2"; echo
+```

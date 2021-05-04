@@ -32,8 +32,7 @@ public class AuctionHandlerFunc {
         // send POST request to all bidders and collect responses
         var bidResponseFlux = Flux
                 .fromStream(bidderService.bidResponseStream(adId, attributes.toSingleValueMap()))
-                .parallel()
-                .runOn(Schedulers.parallel())
+                .parallel().runOn(Schedulers.parallel())
                 .flatMap(this::gatherResponses);
 
         // process the winner bid
@@ -41,6 +40,15 @@ public class AuctionHandlerFunc {
                 .reduce((bidResp1, bidResp2) -> {
                     if (bidResp1.getBid() > bidResp2.getBid()) return bidResp1;
                     else return bidResp2;
+//                    else if (bidResp1.getBid() < bidResp2.getBid()) return bidResp2;
+//                    else {
+//                        if (bidResp1.getContent().contains("a")) return bidResp1;
+//                        else if (bidResp2.getContent().contains("a")) return bidResp2;
+//                        else if (bidResp1.getContent().contains("b")) return bidResp1;
+//                        else if (bidResp2.getContent().contains("b")) return bidResp2;
+//                        else if (bidResp1.getContent().contains("c")) return bidResp1;
+//                        else return bidResp2;
+//                    }
                 })
                 .map(bid -> {
                     var price = bid.getContent().replace("$price$", bid.getBid().toString());
