@@ -34,6 +34,12 @@ sourceSets {
     }
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
 test {
     useJUnitPlatform()
     testLogging {

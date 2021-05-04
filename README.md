@@ -1,3 +1,6 @@
+[![Java CI with Gradle](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/gradle.yml/badge.svg)](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/gradle.yml)
+
+
 Bidding system
 ==============
 
