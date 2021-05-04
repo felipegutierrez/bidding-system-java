@@ -1,7 +1,7 @@
 package org.github.felipegutierrez.biddingsystem.auction.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import org.github.felipegutierrez.biddingsystem.auction.message.BidResponse;
+import org.github.felipegutierrez.biddingsystem.auction.domain.BidResponse;
 import org.github.felipegutierrez.biddingsystem.auction.service.BidderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,6 +23,11 @@ public class AuctionHandlerFunc {
         this.bidderService = bidderService;
     }
 
+    /**
+     * Receive GET requests from http://localhost:8080
+     * @param serverRequest
+     * @return
+     */
     public Mono<ServerResponse> bidRequest(ServerRequest serverRequest) {
         var adId = serverRequest.pathVariable("id");
         var attributes = serverRequest.queryParams();
@@ -39,6 +44,7 @@ public class AuctionHandlerFunc {
                 .reduce((bidResp1, bidResp2) -> {
                     if (bidResp1.getBid() > bidResp2.getBid()) return bidResp1;
                     else return bidResp2;
+                    // problem related to: https://github.com/felipegutierrez/bidding-system-java/issues/1
 //                    else if (bidResp1.getBid() < bidResp2.getBid()) return bidResp2;
 //                    else {
 //                        if (bidResp1.getContent().contains("a")) return bidResp1;

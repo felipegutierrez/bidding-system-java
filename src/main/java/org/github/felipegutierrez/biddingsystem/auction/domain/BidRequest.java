@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.biddingsystem.auction.message;
+package org.github.felipegutierrez.biddingsystem.auction.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

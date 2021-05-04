@@ -2,8 +2,8 @@ package org.github.felipegutierrez.biddingsystem.auction.service;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.github.felipegutierrez.biddingsystem.auction.message.BidRequest;
-import org.github.felipegutierrez.biddingsystem.auction.message.BidResponse;
+import org.github.felipegutierrez.biddingsystem.auction.domain.BidRequest;
+import org.github.felipegutierrez.biddingsystem.auction.domain.BidResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
@@ -22,14 +22,25 @@ import java.util.stream.Stream;
 @Service
 public class BidderService {
 
+    /**
+     * List of bidders with WebClient
+     */
     private final Set<WebClient> biddersWebClient = new HashSet<WebClient>();
+
+    /**
+     * List of bidders from args
+     */
     @Getter
     @Value("${bidders:http://localhost:8081, http://localhost:8082, http://localhost:8083}")
     private List<String> bidders;
 
     /**
-     * create a request like:
+     * request bids from bidders:
      * curl -i -X POST "http://localhost:8081" -H "Content-Type: application/json" -d "{\"id\":2,\"attributes\":{\"c\":\"5\",\"b\":\"2\"}}"
+     *
+     * @param adId
+     * @param attributes
+     * @return
      */
     public Stream<Flux<BidResponse>> bidResponseStream(String adId, Map<String, String> attributes) {
         return biddersWebClient.stream()
@@ -42,10 +53,13 @@ public class BidderService {
                             .retrieve()
                             .bodyToFlux(BidResponse.class)
                             .onErrorReturn(new BidResponse(adId, 0, "$price$"))
-                            .log("BidResponse ");
+                            .log("BidResponse: ");
                 });
     }
 
+    /**
+     * create the list of bidders
+     */
     @Bean
     public void createBiddersWebClient() {
         bidders.forEach(bidder -> {

@@ -1,6 +1,6 @@
 package org.github.felipegutierrez.biddingsystem.auction.service;
 
-import org.github.felipegutierrez.biddingsystem.auction.message.BidResponse;
+import org.github.felipegutierrez.biddingsystem.auction.domain.BidResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
