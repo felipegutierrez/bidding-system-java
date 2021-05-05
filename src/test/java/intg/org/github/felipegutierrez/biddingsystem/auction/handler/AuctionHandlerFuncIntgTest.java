@@ -29,7 +29,8 @@ class AuctionHandlerFuncIntgTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                .expectBodyList(String.class);
+                .expectBodyList(String.class)
+                .contains("0");
 
     }
 
@@ -43,6 +44,7 @@ class AuctionHandlerFuncIntgTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                .expectBodyList(String.class);
+                .expectBodyList(String.class)
+                .contains("0");
     }
 }
