@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -66,5 +67,23 @@ public class BidderService {
             biddersWebClient.add(WebClient.create(bidder));
             log.info("added bidder: " + bidder);
         });
+    }
+
+    private Stream<Flux<BidResponse>> bidResponseStreamMono(Mono<BidRequest> bidRequestMono) {
+        return biddersWebClient.stream()
+                .map(bidderWebClient -> {
+                    return bidderWebClient.post()
+                            .uri("/")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .body(bidRequestMono, BidRequest.class)
+                            .retrieve()
+                            .bodyToFlux(BidResponse.class)
+                            .onErrorReturn(new BidResponse("", 0, "$price$"))
+                            .log("BidResponse: ");
+                });
+    }
+
+    public Stream<Flux<BidResponse>> bidResponseStream(BidRequest bidRequest) {
+        return bidResponseStreamMono(Mono.just(bidRequest));
     }
 }
