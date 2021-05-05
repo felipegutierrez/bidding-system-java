@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -36,29 +35,6 @@ public class BidderService {
     private List<String> bidders;
 
     /**
-     * request bids from bidders:
-     * curl -i -X POST "http://localhost:8081" -H "Content-Type: application/json" -d "{\"id\":2,\"attributes\":{\"c\":\"5\",\"b\":\"2\"}}"
-     *
-     * @param adId
-     * @param attributes
-     * @return
-     */
-    public Stream<Flux<BidResponse>> bidResponseStream(String adId, Map<String, String> attributes) {
-        return biddersWebClient.stream()
-                .map(bidderWebClient -> {
-                    var bidRequest = new BidRequest(Integer.parseInt(adId), attributes);
-                    return bidderWebClient.post()
-                            .uri("/")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .body(Mono.just(bidRequest), BidRequest.class)
-                            .retrieve()
-                            .bodyToFlux(BidResponse.class)
-                            .onErrorReturn(new BidResponse(adId, 0, "$price$"))
-                            .log("BidResponse: ");
-                });
-    }
-
-    /**
      * create the list of bidders
      */
     @Bean
@@ -69,6 +45,13 @@ public class BidderService {
         });
     }
 
+    /**
+     * request bids from bidders:
+     * curl -i -X POST "http://localhost:8081" -H "Content-Type: application/json" -d "{\"id\":2,\"attributes\":{\"c\":\"5\",\"b\":\"2\"}}"
+     *
+     * @param bidRequestMono
+     * @return
+     */
     private Stream<Flux<BidResponse>> bidResponseStreamMono(Mono<BidRequest> bidRequestMono) {
         return biddersWebClient.stream()
                 .map(bidderWebClient -> {
@@ -84,6 +67,13 @@ public class BidderService {
                 });
     }
 
+    /**
+     * request bids from bidders:
+     * curl -i -X POST "http://localhost:8081" -H "Content-Type: application/json" -d "{\"id\":2,\"attributes\":{\"c\":\"5\",\"b\":\"2\"}}"
+     *
+     * @param bidRequest
+     * @return
+     */
     public Stream<Flux<BidResponse>> bidResponseStream(BidRequest bidRequest) {
         return bidResponseStreamMono(Mono.just(bidRequest));
     }
