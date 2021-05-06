@@ -63,17 +63,11 @@ public class AuctionHandlerFunc {
                             .reduce((bidResp1, bidResp2) -> {
                                 log.info("filtering the maximum bid: " + bidResp1 + " - " + bidResp2);
                                 if (bidResp1.getBid() > bidResp2.getBid()) return bidResp1;
-                                else return bidResp2;
-                                // problem related to: https://github.com/felipegutierrez/bidding-system-java/issues/1
-                                // else if (bidResp1.getBid() < bidResp2.getBid()) return bidResp2;
-                                // else {
-                                //    if (bidResp1.getContent().contains("a")) return bidResp1;
-                                //    else if (bidResp2.getContent().contains("a")) return bidResp2;
-                                //    else if (bidResp1.getContent().contains("b")) return bidResp1;
-                                //    else if (bidResp2.getContent().contains("b")) return bidResp2;
-                                //    else if (bidResp1.getContent().contains("c")) return bidResp1;
-                                //    else return bidResp2;
-                                // }
+                                else if (bidResp1.getBid() < bidResp2.getBid()) return bidResp2;
+                                else {
+                                    log.warn("There is a tide of bidders: {} vs {}", bidResp1, bidResp2);
+                                    return bidResp2;
+                                }
                             });
                 })
                 .map(bid -> {
@@ -88,8 +82,7 @@ public class AuctionHandlerFunc {
                             .body(BodyInserters.fromValue(winner.getContent()));
                 })
                 .switchIfEmpty(ServerResponse.notFound().build())
-                .onErrorResume(error -> ServerResponse.badRequest().build())
-                ;
+                .onErrorResume(error -> ServerResponse.badRequest().build());
     }
 
     private boolean validate(Tuple2<String, MultiValueMap<String, String>> tuple2) {
