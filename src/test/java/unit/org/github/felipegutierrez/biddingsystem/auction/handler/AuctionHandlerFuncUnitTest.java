@@ -18,8 +18,34 @@ class AuctionHandlerFuncUnitTest {
     @Autowired
     WebTestClient webTestClient;
 
-    @Autowired
-    AuctionHandlerFunc auctionServerHandlerFunc;
+    @Test
+    void bidRequest_complete() {
+
+        var bidRequest = BID_REQUEST_ENDPOINT_V1
+                .replace("{id}", "2")
+                .replace("{attributes}", "?c=5&b=2");
+
+        webTestClient.get().uri(bidRequest)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBodyList(String.class)
+                .contains("0");
+    }
+
+    @Test
+    void bidRequest_noAttributes() {
+        var bidRequest = BID_REQUEST_ENDPOINT_V1
+                .replace("{id}", "234")
+                .replace("{attributes}", "");
+
+        webTestClient.get().uri(bidRequest)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBodyList(String.class)
+                .contains("0");
+    }
 
     @Test
     void bidRequest_noId() {
@@ -35,16 +61,24 @@ class AuctionHandlerFuncUnitTest {
     }
 
     @Test
-    void bidRequest_wrong() {
+    void bidRequest_wrongAttributes() {
         var bidRequest = BID_REQUEST_ENDPOINT_V1
                 .replace("{id}", "234")
                 .replace("{attributes}", "c=5b=2");
 
         webTestClient.get().uri(bidRequest)
                 .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                .expectBodyList(String.class)
-        ;
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
+    void bidRequest_wrongId() {
+        var bidRequest = BID_REQUEST_ENDPOINT_V1
+                .replace("{id}", "one")
+                .replace("{attributes}", "c=5,b=2");
+
+        webTestClient.get().uri(bidRequest)
+                .exchange()
+                .expectStatus().isBadRequest();
     }
 }

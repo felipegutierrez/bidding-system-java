@@ -4,16 +4,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.github.felipegutierrez.biddingsystem.auction.domain.BidRequest;
 import org.github.felipegutierrez.biddingsystem.auction.domain.BidResponse;
 import org.github.felipegutierrez.biddingsystem.auction.service.BidderService;
+import org.github.felipegutierrez.biddingsystem.auction.util.GenericValidator;
 import org.github.felipegutierrez.biddingsystem.auction.validator.BidRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.Validator;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 @Slf4j
@@ -40,12 +45,20 @@ public class AuctionHandlerFunc {
         var attributes = serverRequest.queryParams();
         log.info("received bid request with adID: {} attributes: {}", adId, attributes);
 
-        var bidWinnerMono = Mono
+        return Mono
                 .just(Tuples.of(adId, attributes))
-                .map(tuple2 -> new BidRequest(Integer.parseInt(tuple2.getT1()), tuple2.getT2().toSingleValueMap()))
-                .onErrorReturn(new BidRequest(0, null))
+                .flatMap(tuple2 -> {
+                    if (validate(tuple2)) {
+                        log.info("request parameters valid: {}", tuple2);
+                        return Mono.just(new BidRequest(Integer.parseInt(tuple2.getT1()), tuple2.getT2().toSingleValueMap()));
+                    } else {
+                        log.error("request parameters invalid: {}", tuple2);
+                        return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST));
+                    }
+                })
                 .flatMap(bidRequest -> {
                     return Flux.fromStream(bidderService.bidResponseStream(bidRequest))
+                            .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST)))
                             .flatMap(this::gatherResponses)
                             .reduce((bidResp1, bidResp2) -> {
                                 log.info("filtering the maximum bid: " + bidResp1 + " - " + bidResp2);
@@ -67,17 +80,20 @@ public class AuctionHandlerFunc {
                     var price = bid.getContent().replace("$price$", bid.getBid().toString());
                     bid.setContent(price);
                     return bid;
-                });
-
-        // return the response with the winner bid in JSON format
-        return bidWinnerMono
+                })
                 .flatMap(winner -> {
                     log.info("The winner is: {}", winner);
                     return ServerResponse.ok()
                             .contentType(MediaType.APPLICATION_JSON)
                             .body(BodyInserters.fromValue(winner.getContent()));
                 })
-                .switchIfEmpty(ServerResponse.notFound().build());
+                .switchIfEmpty(ServerResponse.notFound().build())
+                .onErrorResume(error -> ServerResponse.badRequest().build())
+                ;
+    }
+
+    private boolean validate(Tuple2<String, MultiValueMap<String, String>> tuple2) {
+        return GenericValidator.isInteger(tuple2.getT1());
     }
 
     private Flux<BidResponse> gatherResponses(Flux<BidResponse> bidResponseFlux) {
