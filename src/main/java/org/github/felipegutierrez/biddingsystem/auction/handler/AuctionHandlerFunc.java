@@ -65,7 +65,7 @@ public class AuctionHandlerFunc {
                                 if (bidResp1.getBid() > bidResp2.getBid()) return bidResp1;
                                 else if (bidResp1.getBid() < bidResp2.getBid()) return bidResp2;
                                 else {
-                                    log.warn("There is a tide of bidders: {} vs {}", bidResp1, bidResp2);
+                                    log.warn("There is a tie of bidders: {} vs {}", bidResp1, bidResp2);
                                     return bidResp2;
                                 }
                             });
