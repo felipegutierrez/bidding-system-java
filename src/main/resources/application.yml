@@ -6,6 +6,10 @@ spring:
   config:
     activate:
       on-profile: dev
+management:
+  endpoints:
+    web:
+      exposure.include: metrics,prometheus
 ---
 spring:
   config:
