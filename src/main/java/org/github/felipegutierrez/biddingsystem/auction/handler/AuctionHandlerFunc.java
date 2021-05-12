@@ -5,13 +5,11 @@ import org.github.felipegutierrez.biddingsystem.auction.domain.BidRequest;
 import org.github.felipegutierrez.biddingsystem.auction.domain.BidResponse;
 import org.github.felipegutierrez.biddingsystem.auction.service.BidderService;
 import org.github.felipegutierrez.biddingsystem.auction.util.GenericValidator;
-import org.github.felipegutierrez.biddingsystem.auction.validator.BidRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
-import org.springframework.validation.Validator;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -27,8 +25,6 @@ public class AuctionHandlerFunc {
 
     @Autowired
     private final BidderService bidderService;
-
-    private final Validator validator = new BidRequestValidator();
 
     public AuctionHandlerFunc(BidderService bidderService) {
         this.bidderService = bidderService;
