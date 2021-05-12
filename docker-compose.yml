@@ -5,10 +5,11 @@ services:
     image: prom/prometheus:v2.21.0
     ports:
       - 9000:9090
+    environment:
+      - DOCKER_GATEWAY_HOST=${DOCKER_GATEWAY_HOST}
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus-data:/prometheus
     # command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
-
 volumes:
   prometheus-data:
