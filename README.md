@@ -209,8 +209,13 @@ curl -s "http://localhost:8080/1?a=5"; echo
 curl -s "http://localhost:8080/2?c=5&b=2"; echo
 ```
  - Metrics:
-   - Actuator: [http://localhost:8080/actuator/metrics](http://localhost:8080/actuator/metrics)
-   - Prometheus: [http://localhost:8080/actuator/prometheus](http://localhost:8080/actuator/prometheus)
-   - Start prometheus docker image: `docker-compose up`
-     - Targets should start: [http://localhost:9000/targets](http://localhost:9000/targets)
-     - Query dashboard: [http://localhost:9000/graph](http://localhost:9000/graph)
+   - Actuator metrics: [http://localhost:8080/actuator/metrics](http://localhost:8080/actuator/metrics)
+   - Prometheus metrics: [http://localhost:8080/actuator/prometheus](http://localhost:8080/actuator/prometheus)
+   - Start docker image: `docker-compose up`
+     - Prometheus
+       - targets: [http://localhost:9000/targets](http://localhost:9000/targets)
+       - dashboard: [http://localhost:9000/graph](http://localhost:9000/graph)
+       - average inbound request duration: `rate(http_server_requests_seconds_sum[1m]) / rate(http_server_requests_seconds_count[1m])`
+     - Grafana
+       - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
+    
