@@ -211,3 +211,5 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
  - Metrics:
    - Actuator: [http://localhost:8080/actuator/metrics](http://localhost:8080/actuator/metrics)
    - Prometheus: [http://localhost:8080/actuator/prometheus](http://localhost:8080/actuator/prometheus)
+   - Start prometheus docker image: `docker-compose up`
+   - Prometheus dashboard: [http://localhost:9000](http://localhost:9000)
