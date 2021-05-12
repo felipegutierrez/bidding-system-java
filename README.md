@@ -218,4 +218,6 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
        - average inbound request duration: `rate(http_server_requests_seconds_sum[1m]) / rate(http_server_requests_seconds_count[1m])`
      - Grafana
        - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
-    
+  
+![prometheus dashboard](pictures/prometheus.png?raw=true "Prometheus dashboard")
+
