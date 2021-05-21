@@ -1,5 +1,7 @@
 package org.github.felipegutierrez.biddingsystem.auction.service;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.github.felipegutierrez.biddingsystem.auction.domain.BidRequest;
@@ -34,6 +36,14 @@ public class BidderService {
     @Value("${bidders:http://localhost:8081, http://localhost:8082, http://localhost:8083}")
     private List<String> bidders;
 
+    private MeterRegistry meterRegistry;
+    private Counter bidderCallsCounter;
+
+    public BidderService(MeterRegistry meterRegistry) {
+        this.meterRegistry = meterRegistry;
+        initBidderCallCounter();
+    }
+
     /**
      * create the list of bidders
      */
@@ -43,6 +53,10 @@ public class BidderService {
             biddersWebClient.add(WebClient.create(bidder));
             log.info("added bidder: " + bidder);
         });
+    }
+
+    private void initBidderCallCounter() {
+        bidderCallsCounter = this.meterRegistry.counter("bidder.calls", "type", "bidder"); // 1 - create a counter
     }
 
     /**
@@ -55,6 +69,7 @@ public class BidderService {
     private Stream<Flux<BidResponse>> bidResponseStreamMono(Mono<BidRequest> bidRequestMono) {
         return biddersWebClient.stream()
                 .map(bidderWebClient -> {
+                    bidderCallsCounter.increment();
                     return bidderWebClient.post()
                             .uri("/")
                             .contentType(MediaType.APPLICATION_JSON)
