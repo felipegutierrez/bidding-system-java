@@ -234,6 +234,9 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
          - Based on the past 2 hours of data, find out how much disk will fill in next 6 hours: `predict_linear(node_disk_reads_merged_total[1h], 6*60*60)` 
          - Find out the CPU usage percentage: `system_cpu_usage`
          - PromQL functions definitions: [https://prometheus.io/docs/prometheus/latest/querying/functions/](https://prometheus.io/docs/prometheus/latest/querying/functions/)
+       - Bidder requests:
+         - successful calls: `bidder_calls_success_total`
+         - failure calls: `bidder_calls_fail_total`
      - Grafana
        - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
   

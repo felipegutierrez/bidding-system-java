@@ -28,16 +28,15 @@ public class BidderService {
      * List of bidders with WebClient
      */
     private final Set<WebClient> biddersWebClient = new HashSet<WebClient>();
-
+    private final MeterRegistry meterRegistry;
     /**
      * List of bidders from args
      */
     @Getter
     @Value("${bidders:http://localhost:8081, http://localhost:8082, http://localhost:8083}")
     private List<String> bidders;
-
-    private MeterRegistry meterRegistry;
-    private Counter bidderCallsCounter;
+    private Counter bidderRequestCallsCounter;
+    private Counter bidderRequestCallsFailCounter;
 
     public BidderService(MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
@@ -56,7 +55,8 @@ public class BidderService {
     }
 
     private void initBidderCallCounter() {
-        bidderCallsCounter = this.meterRegistry.counter("bidder.calls", "type", "bidder"); // 1 - create a counter
+        bidderRequestCallsCounter = this.meterRegistry.counter("bidder.calls.success", "type", "bidder");
+        bidderRequestCallsFailCounter = this.meterRegistry.counter("bidder.calls.fail", "type", "bidder");
     }
 
     /**
@@ -69,7 +69,7 @@ public class BidderService {
     private Stream<Flux<BidResponse>> bidResponseStreamMono(Mono<BidRequest> bidRequestMono) {
         return biddersWebClient.stream()
                 .map(bidderWebClient -> {
-                    bidderCallsCounter.increment();
+                    bidderRequestCallsCounter.increment();
                     return bidderWebClient.post()
                             .uri("/")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -77,6 +77,7 @@ public class BidderService {
                             .retrieve()
                             .bodyToFlux(BidResponse.class)
                             .timeout(Duration.ofMillis(3000))
+                            .doOnError(throwable -> bidderRequestCallsFailCounter.increment())
                             .onErrorReturn(new BidResponse("", 0, "$price$"))
                             .log("BidResponse: ");
                 });
