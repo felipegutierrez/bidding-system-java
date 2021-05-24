@@ -211,11 +211,18 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
  - Metrics:
    - Actuator metrics: [http://localhost:8080/actuator/metrics](http://localhost:8080/actuator/metrics)
    - Prometheus metrics: [http://localhost:8080/actuator/prometheus](http://localhost:8080/actuator/prometheus)
-   - Start docker image: `docker-compose up`
+   - Start docker image: `ADMIN_USER=admin ADMIN_PASSWORD=admin ADMIN_PASSWORD_HASH=JDJhJDE0JE91S1FrN0Z0VEsyWmhrQVpON1VzdHVLSDkyWHdsN0xNbEZYdnNIZm1pb2d1blg4Y09mL0ZP docker-compose up`
      - Prometheus
-       - targets: [http://localhost:9000/targets](http://localhost:9000/targets)
-       - dashboard: [http://localhost:9000/graph](http://localhost:9000/graph)
-       - average inbound request duration: `rate(http_server_requests_seconds_sum[1m]) / rate(http_server_requests_seconds_count[1m])`
+       - targets: [http://localhost:9090/targets](http://localhost:9090/targets)
+       - dashboard: [http://localhost:9090/graph](http://localhost:9090/graph)
+       - Examples:
+         - average inbound request duration: `rate(http_server_requests_seconds_sum[1m]) / rate(http_server_requests_seconds_count[1m])`
+         - sum of http requests: `sum(prometheus_http_requests_total)`
+         - sum of http requests grouped by code: `sum(prometheus_http_requests_total) by (code)`
+         - Node exporter aggregation CPU modes: `sum(node_cpu_seconds_total) by (mode)`
+         - Top-K CPU modes: `topk(3, sum(node_cpu_seconds_total) by (mode))`
+         - Bottom-K CPU modes: `bottomk(3, sum(node_cpu_seconds_total) by (mode))`
+         - Max and min: `max(node_cpu_seconds_total)` - `min(node_cpu_seconds_total)
      - Grafana
        - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
   
