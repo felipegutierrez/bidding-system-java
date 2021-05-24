@@ -55,8 +55,8 @@ public class BidderService {
     }
 
     private void initBidderCallCounter() {
-        bidderRequestCallsCounter = this.meterRegistry.counter("bidder.calls.success", "type", "bidder");
-        bidderRequestCallsFailCounter = this.meterRegistry.counter("bidder.calls.fail", "type", "bidder");
+        bidderRequestCallsCounter = this.meterRegistry.counter("bidder.calls.success", "type", "bidder", "op", "1");
+        bidderRequestCallsFailCounter = this.meterRegistry.counter("bidder.calls.fail", "type", "bidder", "op", "0");
     }
 
     /**

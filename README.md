@@ -235,8 +235,8 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
          - Find out the CPU usage percentage: `system_cpu_usage`
          - PromQL functions definitions: [https://prometheus.io/docs/prometheus/latest/querying/functions/](https://prometheus.io/docs/prometheus/latest/querying/functions/)
        - Bidder requests:
-         - successful calls: `bidder_calls_success_total`
-         - failure calls: `bidder_calls_fail_total`
+         - successful and failure calls: `bidder_calls_success_total` and `bidder_calls_fail_total`
+         - successful and failure calls together: `bidder_calls_success_total or bidder_calls_fail_total`
          - average: `avg_over_time(bidder_calls_success_total[1m])` and `avg_over_time(bidder_calls_fail_total[1m])`
      - Grafana
        - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
