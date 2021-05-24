@@ -1,6 +1,7 @@
 package org.github.felipegutierrez.biddingsystem.auction.handler;
 
 import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.github.felipegutierrez.biddingsystem.auction.domain.BidRequest;
@@ -23,6 +24,7 @@ import reactor.util.function.Tuples;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -34,6 +36,7 @@ public class AuctionHandlerFunc {
     private final MeterRegistry meterRegistry;
     private Gauge auctionInProgressGauge;
     private List<Integer> auctionInProgress;
+    private Timer timer;
 
     public AuctionHandlerFunc(BidderService bidderService, MeterRegistry meterRegistry) {
         this.bidderService = bidderService;
@@ -48,6 +51,11 @@ public class AuctionHandlerFunc {
                 .tags("type", "bidder")
                 .tags("type", "auction")
                 .register(this.meterRegistry);
+        timer = Timer.builder("bidder.auction.latency")
+                .tags("type", "bidder")
+                .tags("type", "auction")
+                .tags("type", "latency")
+                .register(this.meterRegistry);
     }
 
     /**
@@ -61,6 +69,8 @@ public class AuctionHandlerFunc {
         var attributes = serverRequest.queryParams();
         log.info("received bid request with adID: {} attributes: {}", adId, attributes);
         auctionInProgress.add(1);
+
+        long start = System.nanoTime();
 
         return Mono
                 .just(Tuples.of(adId, attributes))
@@ -95,6 +105,8 @@ public class AuctionHandlerFunc {
                 .flatMap(winner -> {
                     log.info("The winner is: {}", winner);
                     auctionInProgress.remove(0);
+                    timer.record(System.nanoTime() - start, TimeUnit.NANOSECONDS);
+
                     return ServerResponse.ok()
                             .contentType(MediaType.APPLICATION_JSON)
                             .body(BodyInserters.fromValue(winner.getContent()));
