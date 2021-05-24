@@ -1,5 +1,7 @@
 package org.github.felipegutierrez.biddingsystem.auction.handler;
 
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.github.felipegutierrez.biddingsystem.auction.domain.BidRequest;
 import org.github.felipegutierrez.biddingsystem.auction.domain.BidResponse;
@@ -19,6 +21,9 @@ import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Component
 public class AuctionHandlerFunc {
@@ -26,8 +31,23 @@ public class AuctionHandlerFunc {
     @Autowired
     private final BidderService bidderService;
 
-    public AuctionHandlerFunc(BidderService bidderService) {
+    private final MeterRegistry meterRegistry;
+    private Gauge auctionInProgressGauge;
+    private List<Integer> auctionInProgress;
+
+    public AuctionHandlerFunc(BidderService bidderService, MeterRegistry meterRegistry) {
         this.bidderService = bidderService;
+        this.meterRegistry = meterRegistry;
+        initAuctionGauge();
+    }
+
+    private void initAuctionGauge() {
+        this.auctionInProgress = new ArrayList<>(4);
+        this.auctionInProgressGauge = Gauge
+                .builder("bidder.auction.inprogress", auctionInProgress, List::size)
+                .tags("type", "bidder")
+                .tags("type", "auction")
+                .register(this.meterRegistry);
     }
 
     /**
@@ -40,6 +60,7 @@ public class AuctionHandlerFunc {
         var adId = serverRequest.pathVariable("id");
         var attributes = serverRequest.queryParams();
         log.info("received bid request with adID: {} attributes: {}", adId, attributes);
+        auctionInProgress.add(1);
 
         return Mono
                 .just(Tuples.of(adId, attributes))
@@ -73,6 +94,7 @@ public class AuctionHandlerFunc {
                 })
                 .flatMap(winner -> {
                     log.info("The winner is: {}", winner);
+                    auctionInProgress.remove(0);
                     return ServerResponse.ok()
                             .contentType(MediaType.APPLICATION_JSON)
                             .body(BodyInserters.fromValue(winner.getContent()));

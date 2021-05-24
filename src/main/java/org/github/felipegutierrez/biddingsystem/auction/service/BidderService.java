@@ -28,13 +28,14 @@ public class BidderService {
      * List of bidders with WebClient
      */
     private final Set<WebClient> biddersWebClient = new HashSet<WebClient>();
-    private final MeterRegistry meterRegistry;
     /**
      * List of bidders from args
      */
     @Getter
     @Value("${bidders:http://localhost:8081, http://localhost:8082, http://localhost:8083}")
     private List<String> bidders;
+
+    private final MeterRegistry meterRegistry;
     private Counter bidderRequestCallsCounter;
     private Counter bidderRequestCallsFailCounter;
 
