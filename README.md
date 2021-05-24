@@ -237,6 +237,7 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
        - Bidder requests:
          - successful calls: `bidder_calls_success_total`
          - failure calls: `bidder_calls_fail_total`
+         - average: `avg_over_time(bidder_calls_success_total[1m])` and `avg_over_time(bidder_calls_fail_total[1m])`
      - Grafana
        - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
   
