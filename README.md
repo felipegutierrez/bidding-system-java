@@ -222,7 +222,18 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
          - Node exporter aggregation CPU modes: `sum(node_cpu_seconds_total) by (mode)`
          - Top-K CPU modes: `topk(3, sum(node_cpu_seconds_total) by (mode))`
          - Bottom-K CPU modes: `bottomk(3, sum(node_cpu_seconds_total) by (mode))`
-         - Max and min: `max(node_cpu_seconds_total)` - `min(node_cpu_seconds_total)
+         - Max and min: `max(node_cpu_seconds_total)` - `min(node_cpu_seconds_total)`
+         - Rate/frequency of http requests per 1 minute: `rate(prometheus_http_requests_total[1m])`
+         - Rate/frequency with handler: `rate(prometheus_http_requests_total{handler=~"/api.*"}[1m])`
+         - irate to calculate based on the last 2 points measured: `irate(prometheus_http_requests_total[1m])`
+         - how many times a given metric changed over some time: `changes(process_start_time_seconds[1h])`
+         - calculates the per-second derivative of the time series in a range vector v, using simple linear regression: `deriv(process_resident_memory_bytes[1h])`
+         - predict how much memory will be available for the next 2 hours based on the last hour: `predict_linear(node_memory_MemFree_bytes[1h], 2*60*60)/1024/1024`
+         - Check if node memory is less than 20% or not: `100 * (node_memory_Active_bytes / node_memory_MemTotal_bytes)` or `(node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100` 
+         - Graph the disk read rate: `rate(node_disk_reads_merged_total[30m])`
+         - Based on the past 2 hours of data, find out how much disk will fill in next 6 hours: `predict_linear(node_disk_reads_merged_total[1h], 6*60*60)` 
+         - Find out the CPU usage percentage: `system_cpu_usage`
+         - PromQL functions definitions: [https://prometheus.io/docs/prometheus/latest/querying/functions/](https://prometheus.io/docs/prometheus/latest/querying/functions/)
      - Grafana
        - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
   
