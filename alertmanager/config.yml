@@ -1,11 +1,21 @@
 route:
-    receiver: 'slack'
+    receiver: 'admin'
 
 receivers:
     - name: 'slack'
       slack_configs:
-          - send_resolved: true
-            text: "{{ .CommonAnnotations.description }}"
-            username: 'Prometheus'
-            channel: '#<channel-name>'
-            api_url: 'https://hooks.slack.com/services/<webhook-id>'
+      - send_resolved: true
+        text: "{{ .CommonAnnotations.description }}"
+        username: 'Prometheus'
+        channel: '#<channel-name>'
+        api_url: 'https://hooks.slack.com/services/<webhook-id>'
+
+    - name: 'admin'
+      email_configs:
+      - to: '@gmail.com'
+        from: '@gmail.com'
+        smarthost: smtp.gmail.com:587
+        auth_username: '@gmail.com'
+        auth_identity: '@gmail.com'
+        auth_password: ''
+
