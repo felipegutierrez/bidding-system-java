@@ -1,7 +1,39 @@
+global:
+  smtp_from: 'example@gmail.com'
+  smtp_smarthost: smtp.gmail.com:587
+  smtp_auth_username: 'example@gmail.com'
+  smtp_auth_identity: 'example@gmail.com'
+  smtp_auth_password: ''
+
 route:
-    receiver: 'admin'
+  receiver: 'admin-team'
+  routes:
+    - match_re:
+        app_type: (server|service)
+      receiver: 'admin-team'
+      routes:
+      - match:
+          app_type: server
+        receiver: 'admin-team'
+        group_wait: 2m
+        group_interval: 30s
+        repeat_interval: 1m
+      - match:
+          app_type: service
+        receiver: 'dev-team'
+        group_wait: 5m
+        group_interval: 3m
+        repeat_interval: 10m
 
 receivers:
+ - name: 'admin-team'
+   email_configs:
+   - to: 'example@gmail.com'
+
+ - name: 'dev-team'
+   email_configs:
+   - to: 'example@gmail.com'
+
  - name: 'slack'
    slack_configs:
    - send_resolved: true
@@ -9,13 +41,3 @@ receivers:
      username: 'Prometheus'
      channel: '#<channel-name>'
      api_url: 'https://hooks.slack.com/services/<webhook-id>'
-
- - name: 'admin'
-   email_configs:
-   - to: '@gmail.com'
-     from: '@gmail.com'
-     smarthost: smtp.gmail.com:587
-     auth_username: '@gmail.com'
-     auth_identity: '@gmail.com'
-     auth_password: ''
-
