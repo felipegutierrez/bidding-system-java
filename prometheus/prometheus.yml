@@ -43,6 +43,22 @@ scrape_configs:
     static_configs:
       - targets: ['pushgateway:9091']
 
+  - job_name: 'blackbox-prometheus-website'
+    static_configs:
+      - targets:
+          - prometheus.io
+    metrics_path: /probe
+    params:
+      module:
+        - http_ipv4
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 172.17.0.1:9115  # The blackbox exporter's real hostname:port.
+
 
 alerting:
   alertmanagers:

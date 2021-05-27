@@ -246,6 +246,10 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
        - Default debug ipv4 probe (property: `http_ipv4`): [http://127.0.0.1:9115/probe?target=prometheus.io&module=http_ipv4&debug=true](http://127.0.0.1:9115/probe?target=prometheus.io&module=http_ipv4&debug=true)
        - Pattern matching debug ipv4 probe (property: `http_find_prom`): [http://127.0.0.1:9115/probe?target=prometheus.io&module=http_find_prom&debug=true](http://127.0.0.1:9115/probe?target=prometheus.io&module=http_find_prom&debug=true)
        - ICMP probe: [http://127.0.0.1:9115/probe?target=8.8.8.8&module=icmp](http://127.0.0.1:9115/probe?target=8.8.8.8&module=icmp)
+       - DNS probe: [http://127.0.0.1:9115/probe?target=8.8.8.8&module=dns_example](http://127.0.0.1:9115/probe?target=8.8.8.8&module=dns_example)
+       - Scraping prometheus.io using Blackbox:
+         - probe_success: [http://127.0.0.1:9090/graph?g0.expr=probe_success&g0.tab=1&g0.stacked=0&g0.range_input=1h](http://127.0.0.1:9090/graph?g0.expr=probe_success&g0.tab=1&g0.stacked=0&g0.range_input=1h)
+         - probe_http_duration_seconds: [http://127.0.0.1:9090/graph?g0.expr=probe_http_duration_seconds&g0.tab=1&g0.stacked=0&g0.range_input=1h](http://127.0.0.1:9090/graph?g0.expr=probe_http_duration_seconds&g0.tab=1&g0.stacked=0&g0.range_input=1h)
      - Grafana
        - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
   
