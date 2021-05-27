@@ -243,8 +243,9 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
        - Rules: [http://127.0.0.1:9090/rules](http://127.0.0.1:9090/rules)
        - Alert manager: [http://127.0.0.1:9093/](http://127.0.0.1:9093/)
      - Blackbox exporter: [http://127.0.0.1:9115/](http://127.0.0.1:9115/)
-       - Default debug ipv4 (property: `http_ipv4`): [http://127.0.0.1:9115/probe?target=prometheus.io&module=http_ipv4&debug=true](http://127.0.0.1:9115/probe?target=prometheus.io&module=http_ipv4&debug=true)
-       - Pattern matching debug ipv4 (property: `http_find_prom`): [http://127.0.0.1:9115/probe?target=prometheus.io&module=http_find_prom&debug=true](http://127.0.0.1:9115/probe?target=prometheus.io&module=http_find_prom&debug=true)
+       - Default debug ipv4 probe (property: `http_ipv4`): [http://127.0.0.1:9115/probe?target=prometheus.io&module=http_ipv4&debug=true](http://127.0.0.1:9115/probe?target=prometheus.io&module=http_ipv4&debug=true)
+       - Pattern matching debug ipv4 probe (property: `http_find_prom`): [http://127.0.0.1:9115/probe?target=prometheus.io&module=http_find_prom&debug=true](http://127.0.0.1:9115/probe?target=prometheus.io&module=http_find_prom&debug=true)
+       - ICMP probe: [http://127.0.0.1:9115/probe?target=8.8.8.8&module=icmp](http://127.0.0.1:9115/probe?target=8.8.8.8&module=icmp)
      - Grafana
        - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
   
