@@ -264,8 +264,14 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
        - status
          - runtime: `http GET http://admin:admin@127.0.0.1:9090/api/v1/status/runtimeinfo`
          - build: `http GET http://admin:admin@127.0.0.1:9090/api/v1/status/buildinfo`
-     - Grafana
-       - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
+     - Grafana (admin/admin): [http://localhost:3000/](http://localhost:3000/)
+       - docker container dashboard: [http://127.0.0.1:3000/d/s889cJ3Gz/docker-containers?orgId=1&refresh=10s](http://127.0.0.1:3000/d/s889cJ3Gz/docker-containers?orgId=1&refresh=10s)
+       - docker host dashboard: [http://127.0.0.1:3000/d/C8U9c1qGz/docker-host?orgId=1&refresh=10s](http://127.0.0.1:3000/d/C8U9c1qGz/docker-host?orgId=1&refresh=10s)
+       - services dashboard: [http://127.0.0.1:3000/d/VwU9cJ3Mz/monitor-services?orgId=1&refresh=10s](http://127.0.0.1:3000/d/VwU9cJ3Mz/monitor-services?orgId=1&refresh=10s)
+       - nginx dashboard: [http://127.0.0.1:3000/d/hwUrcJ3Gk/nginx?orgId=1&refresh=10s](http://127.0.0.1:3000/d/hwUrcJ3Gk/nginx?orgId=1&refresh=10s)
+       - prometheus stats dashboard: [http://127.0.0.1:3000/d/yt7cH93Mz/prometheus-stats?orgId=1](http://127.0.0.1:3000/d/yt7cH93Mz/prometheus-stats?orgId=1)
+       - prometheus stats 2.0 dashboard: [http://127.0.0.1:3000/d/UI45H9qMz/prometheus-2-0-stats?orgId=1&refresh=1m](http://127.0.0.1:3000/d/UI45H9qMz/prometheus-2-0-stats?orgId=1&refresh=1m)
+       - grafana dashboard: [http://127.0.0.1:3000/d/A6VcH93Gk/grafana-metrics?orgId=1](http://127.0.0.1:3000/d/A6VcH93Gk/grafana-metrics?orgId=1)
   
 ![prometheus dashboard](pictures/prometheus.png?raw=true "Prometheus dashboard")
 
