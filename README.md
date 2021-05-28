@@ -253,6 +253,17 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
          - probe_http_duration_seconds: [http://127.0.0.1:9090/graph?g0.expr=probe_http_duration_seconds&g0.tab=1&g0.stacked=0&g0.range_input=1h](http://127.0.0.1:9090/graph?g0.expr=probe_http_duration_seconds&g0.tab=1&g0.stacked=0&g0.range_input=1h)
      - Pushgateway: [http://127.0.0.1:9091/](http://127.0.0.1:9091/)
        - Push metrics: `echo "some_metric 3.14" | curl --data-binary @- http://admin:admin@localhost:9091/metrics/job/some_job`
+     - Prometheus HTTP Rest endpoints using [httpie](https://httpie.io/):
+       - services status: `http GET http://admin:admin@127.0.0.1:9090/api/v1/query?query=up`
+       - prometheus http requests for the last 1 minute: `http GET http://admin:admin@127.0.0.1:9090/api/v1/query?query=prometheus_http_requests_total[1m]`
+       - targets: `http GET http://admin:admin@127.0.0.1:9090/api/v1/targets?state=active`
+       - rules: `http GET http://admin:admin@127.0.0.1:9090/api/v1/rules`
+         - records: `http GET http://admin:admin@127.0.0.1:9090/api/v1/rules?types=record`
+         - alerts: `http GET http://admin:admin@127.0.0.1:9090/api/v1/rules?types=alert`
+       - alerts: `http GET http://admin:admin@127.0.0.1:9090/api/v1/alerts`
+       - status
+         - runtime: `http GET http://admin:admin@127.0.0.1:9090/api/v1/status/runtimeinfo`
+         - build: `http GET http://admin:admin@127.0.0.1:9090/api/v1/status/buildinfo`
      - Grafana
        - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
   
