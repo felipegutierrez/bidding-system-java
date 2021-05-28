@@ -250,6 +250,8 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
        - Scraping prometheus.io using Blackbox:
          - probe_success: [http://127.0.0.1:9090/graph?g0.expr=probe_success&g0.tab=1&g0.stacked=0&g0.range_input=1h](http://127.0.0.1:9090/graph?g0.expr=probe_success&g0.tab=1&g0.stacked=0&g0.range_input=1h)
          - probe_http_duration_seconds: [http://127.0.0.1:9090/graph?g0.expr=probe_http_duration_seconds&g0.tab=1&g0.stacked=0&g0.range_input=1h](http://127.0.0.1:9090/graph?g0.expr=probe_http_duration_seconds&g0.tab=1&g0.stacked=0&g0.range_input=1h)
+     - Pushgateway: [http://127.0.0.1:9091/](http://127.0.0.1:9091/)
+       - Push metrics: `echo "some_metric 3.14" | curl --data-binary @- http://admin:admin@localhost:9091/metrics/job/some_job`
      - Grafana
        - dashboard (admin/pass): [http://localhost:3000/](http://localhost:3000/)
   
