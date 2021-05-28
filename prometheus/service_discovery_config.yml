@@ -1,0 +1,6 @@
+- targets:
+  - '172.17.0.1:9100'
+  labels:
+    job: "node_exporter_service_discovery"
+    team: "development"
+    region: "Berlin"
