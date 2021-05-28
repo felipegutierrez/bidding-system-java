@@ -229,6 +229,7 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
            - how many times a given metric changed over some time: `changes(process_start_time_seconds[1h])`
            - calculates the per-second derivative of the time series in a range vector v, using simple linear regression: `deriv(process_resident_memory_bytes[1h])`
            - predict how much memory will be available for the next 2 hours based on the last hour: `predict_linear(node_memory_MemFree_bytes[1h], 2*60*60)/1024/1024`
+           - [Cpu usage proportion](https://www.robustperception.io/using-group_left-to-calculate-label-proportions): `sum without (cpu)(rate(node_cpu_seconds_total[1m])) / ignoring(mode) group_left sum without (mode, cpu)(rate(node_cpu_seconds_total[1m]))`
           - Check if node memory is less than 20% or not: `100 * (node_memory_Active_bytes / node_memory_MemTotal_bytes)` or `(node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100` 
            - Graph the disk read rate: `rate(node_disk_reads_merged_total[30m])`
            - Based on the past 2 hours of data, find out how much disk will fill in next 6 hours: `predict_linear(node_disk_reads_merged_total[1h], 6*60*60)` 
