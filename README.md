@@ -1,7 +1,10 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ed3ee8d5f83443d6a487f4bab72f2f4a)](https://app.codacy.com/gh/felipegutierrez/bidding-system-java?utm_source=github.com&utm_medium=referral&utm_content=felipegutierrez/bidding-system-java&utm_campaign=Badge_Grade_Settings)
 [![Java CI with Gradle](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/gradle.yml/badge.svg)](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/gradle.yml)
 [![Run Test Suites](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/codecov-test-suites.yml/badge.svg)](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/codecov-test-suites.yml)
+[![Docker biddingsystem-java project](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/docker-hub-publish.yml/badge.svg)](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/docker-hub-publish.yml)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ed3ee8d5f83443d6a487f4bab72f2f4a)](https://app.codacy.com/gh/felipegutierrez/bidding-system-java?utm_source=github.com&utm_medium=referral&utm_content=felipegutierrez/bidding-system-java&utm_campaign=Badge_Grade_Settings)
 [![codecov](https://codecov.io/gh/felipegutierrez/bidding-system-java/branch/main/graph/badge.svg?token=wsGWEdNtGR)](https://codecov.io/gh/felipegutierrez/bidding-system-java)
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/felipeogutierrez/biddingsystem-java)
+
 
 Bidding system
 ==============
@@ -274,7 +277,8 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
        - prometheus stats 2.0 dashboard: [http://127.0.0.1:3000/d/UI45H9qMz/prometheus-2-0-stats?orgId=1&refresh=1m](http://127.0.0.1:3000/d/UI45H9qMz/prometheus-2-0-stats?orgId=1&refresh=1m)
        - grafana dashboard: [http://127.0.0.1:3000/d/A6VcH93Gk/grafana-metrics?orgId=1](http://127.0.0.1:3000/d/A6VcH93Gk/grafana-metrics?orgId=1)
   
-![prometheus dashboard](pictures/prometheus.png?raw=true "Prometheus dashboard")
+  
+![grafana prometheus dashboard](pictures/grafana-prometheus.png?raw=true "Grafana Prometheus dashboard")
 
 - Create docker image:
 ```
