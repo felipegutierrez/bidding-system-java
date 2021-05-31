@@ -26,14 +26,12 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       - name: Build image
-        working-directory: biddingsystem-java
         run: |
           ./gradlew jar docker
           # docker build . --file Dockerfile --tag ${{secrets.DOCKER_USER}}/$IMAGE_NAME:$VERSION
           docker build . --file Dockerfile --tag felipeogutierrez/biddingsystem-java:0.0.1
 
       - name: Push image
-        working-directory: biddingsystem-java
         run: |
           # IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
           # Change all uppercase to lowercase
