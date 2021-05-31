@@ -275,3 +275,18 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
   
 ![prometheus dashboard](pictures/prometheus.png?raw=true "Prometheus dashboard")
 
+- Create docker image:
+```
+$ ./gradlew jar docker
+$ docker images
+REPOSITORY                                        TAG                          IMAGE ID       CREATED          SIZE
+biddingsystem-java                                0.0.1                        8cfc0bd8626e   10 seconds ago   168MB
+```
+- Running the docker image: `./gradlew jar docker dockerRun` or `docker run -i -t biddingsystem-java:0.1.0`
+- Stop docker image: `docker stop biddingsystem-java`
+- Logs:
+```
+docker logs biddingsystem-java
+docker inspect biddingsystem-java
+```
+
