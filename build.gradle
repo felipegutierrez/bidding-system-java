@@ -56,6 +56,15 @@ test {
     }
 }
 
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'org.github.felipegutierrez.biddingsystem.BiddingsystemApplication'
+        )
+    }
+}
+
 docker.dependsOn(jar)
 docker {
     dependsOn jar
