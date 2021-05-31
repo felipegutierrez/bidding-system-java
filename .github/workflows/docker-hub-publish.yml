@@ -1,0 +1,53 @@
+name: Docker reactor-only project
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: biddingsystem-java
+  VERSION: 0.0.1
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # - name: Log into registry
+        # run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+      - name: docker login
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+      - name: Build image
+        working-directory: biddingsystem-java
+        run: |
+          ./gradlew jar docker
+          # docker build . --file Dockerfile --tag ${{secrets.DOCKER_USER}}/$IMAGE_NAME:$VERSION
+          docker build . --file Dockerfile --tag felipeogutierrez/biddingsystem-java:0.0.1
+
+      - name: Push image
+        working-directory: biddingsystem-java
+        run: |
+          # IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+          # Change all uppercase to lowercase
+          # IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          # VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          # [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          # [ "$VERSION" == "$default-branch" ] && VERSION=latest
+          echo IMAGE_NAME=$IMAGE_NAME
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          echo DOCKER_USER=${{secrets.DOCKER_USER}}
+          # docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push felipeogutierrez/biddingsystem-java:0.0.1
+          # docker push ${{secrets.DOCKER_USER}}/$IMAGE_NAME:$VERSION
