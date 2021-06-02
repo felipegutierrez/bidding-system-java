@@ -280,6 +280,11 @@ curl -s "http://localhost:8080/2?c=5&b=2"; echo
   
 ![grafana prometheus dashboard](pictures/grafana-prometheus.png?raw=true "Grafana Prometheus dashboard")
 
+- Kubernetes
+ - create the bidding system namespace with all pods: `./k8s/create-cluster.sh`
+ - delete everything on the namespace: `kubectl delete all --all --namespace=bidding-system`
+ - Prometheus: [http://localhost:8080/](http://localhost:8080/)
+
 - Create docker image:
 ```
 $ ./gradlew jar docker
