@@ -31,9 +31,9 @@ kubectl create -f k8s/prometheus-service.yaml --namespace=bidding-system
 sleep 10
 echo
 echo "forward pod port to localhost"
-echo "kubectl port-forward prometheus-pod-name 8080:9090 --namespace=bidding-system"
+echo "kubectl port-forward prometheus-pod-name 9090:9090 --namespace=bidding-system"
 echo $prometheus_pod_name
-kubectl port-forward $prometheus_pod_name 8080:9090 --namespace=bidding-system
+kubectl port-forward $prometheus_pod_name 9090:9090 --namespace=bidding-system
 
 echo
 echo "Delete all pods and namespace"
