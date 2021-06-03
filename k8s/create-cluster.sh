@@ -39,6 +39,13 @@ echo
 echo "Delete all pods and namespace"
 echo "kubectl delete all --all --namespace=bidding-system"
 
+echo
+echo "show all context"
+echo "kubectl config get-contexts"
+echo
+echo "change context"
+echo "kubectl config use-context minikube"
+
 
 echo
 

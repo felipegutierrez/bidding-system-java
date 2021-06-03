@@ -3,6 +3,7 @@
 [![Docker biddingsystem-java project](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/docker-hub-publish.yml/badge.svg)](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/docker-hub-publish.yml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ed3ee8d5f83443d6a487f4bab72f2f4a)](https://app.codacy.com/gh/felipegutierrez/bidding-system-java?utm_source=github.com&utm_medium=referral&utm_content=felipegutierrez/bidding-system-java&utm_campaign=Badge_Grade_Settings)
 [![codecov](https://codecov.io/gh/felipegutierrez/bidding-system-java/branch/main/graph/badge.svg?token=wsGWEdNtGR)](https://codecov.io/gh/felipegutierrez/bidding-system-java)
+[![CodeQL](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/felipegutierrez/bidding-system-java/actions/workflows/codeql-analysis.yml)
 ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/felipeogutierrez/biddingsystem-java)
 
 
