@@ -20,6 +20,8 @@ scrape_configs:
       # this should be the target host IP which is outside of the docker:
       # 172.17.0.1   or   "export DOCKER_GATEWAY_HOST=$(hostname -I | awk '{print $1}')"
       - targets: [ '172.17.0.1:8080' ]
+        labels:
+          instance: 'bidding-system-spring-boot-app'
 
   - job_name: 'nodeexporter'
     scrape_interval: 5s
